@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Responsive Arithmetic Calculator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .calculator {
+      width: 100%;
+      max-width: 350px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+      margin-bottom: 30px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    #display {
+      width: 100%;
+      padding: 20px;
+      font-size: 2em;
+      text-align: right;
+      border: none;
+      background-color: #eee;
+      outline: none;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      padding: 15px;
+    }
+
+    button {
+      padding: 20px;
+      font-size: 1.4em;
+      border: none;
+      border-radius: 8px;
+      background-color: #f0f0f0;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    button:hover {
+      background-color: #dcdcdc;
+    }
+
+    button.operator {
+      background-color: #ffcb05;
+    }
+
+    button.equal {
+      background-color: #00b894;
+      color: white;
+    }
+
+    button:active {
+      transform: scale(0.97);
+    }
+
+    .description {
+      max-width: 500px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    .description h2 {
+      margin-top: 0;
+    }
+
+    .description ul {
+      padding-left: 20px;
+    }
+
+    @media (max-width: 400px) {
+      #display {
+        font-size: 1.6em;
+        padding: 15px;
+      }
+      button {
+        padding: 16px;
+        font-size: 1.2em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="calculator">
+    <input type="text" id="display" readonly />
+    <div class="buttons">
+      <button onclick="clearDisplay()">AC</button>
+      <button onclick="appendToDisplay('7')">7</button>
+      <button onclick="appendToDisplay('8')">8</button>
+      <button onclick="appendToDisplay('9')">9</button>
+
+      <button onclick="appendToDisplay('+')" class="operator">+</button>
+      <button onclick="appendToDisplay('4')">4</button>
+      <button onclick="appendToDisplay('5')">5</button>
+      <button onclick="appendToDisplay('6')">6</button>
+
+      <button onclick="appendToDisplay('-')" class="operator">−</button>
+      <button onclick="appendToDisplay('1')">1</button>
+      <button onclick="appendToDisplay('2')">2</button>
+      <button onclick="appendToDisplay('3')">3</button>
+
+      <button onclick="appendToDisplay('*')" class="operator">×</button>
+      <button onclick="appendToDisplay('0')">0</button>
+      <button onclick="appendToDisplay('.')">.</button>
+      <button onclick="appendToDisplay('/')" class="operator">÷</button>
+
+      <button onclick="calculate()" class="equal" style="grid-column: span 4;">=</button>
+    </div>
+  </div>
+
+  <div class="description">
+    <h2>What Are the Functions on the Calculator?</h2>
+    <p>This is a simple calculator with four basic arithmetic operations. Here’s what each symbol means:</p>
+    <ul>
+      <li><strong>+</strong> Addition – Adds two numbers (e.g., 5 + 2 = 7)</li>
+      <li><strong>−</strong> Subtraction – Subtracts one number from another (e.g., 9 − 4 = 5)</li>
+      <li><strong>×</strong> Multiplication – Multiplies two numbers (e.g., 3 × 4 = 12)</li>
+      <li><strong>÷</strong> Division – Divides one number by another (e.g., 8 ÷ 2 = 4)</li>
+    </ul>
+    <p>You can use the number buttons and operators to enter expressions. Click <strong>=</strong> to calculate. Press <strong>AC</strong> to clear the screen. You can also use your keyboard!</p>
+  </div>
+
+  <script>
+    const display = document.getElementById('display');
+
+    function appendToDisplay(value) {
+      display.value += value;
+    }
+
+    function clearDisplay() {
+      display.value = '';
+    }
+
+    function calculate() {
+      try {
+        display.value = eval(display.value);
+      } catch {
+        display.value = 'Error';
+      }
+    }
+
+    // Keyboard support
+    document.addEventListener('keydown', function(event) {
+      const key = event.key;
+
+      if (!isNaN(key) || ['+', '-', '*', '/', '.'].includes(key)) {
+        appendToDisplay(key);
+      } else if (key === 'Enter') {
+        calculate();
+      } else if (key === 'Backspace') {
+        display.value = display.value.slice(0, -1);
+      } else if (key.toLowerCase() === 'c') {
+        clearDisplay();
+      }
+    });
+  </script>
+
+</body>
+</html>
